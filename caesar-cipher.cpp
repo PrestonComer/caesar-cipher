@@ -4,12 +4,12 @@
 #include <algorithm>
 
 std::vector<std::string> getInput() {
-    // userInput {
+    // userInput
         // (0) String To Be encrypted
         // (1) Process To Be Done
         // (2) Values To Shift By
-    std::vector<std::string> userInput(10, "");
-    std::cout << "Enter String To Be Encrypted: ";
+    std::vector<std::string> userInput(3, "");
+    std::cout << "Enter String To Be Encrypted/Decrypted: ";
     std::cin >> userInput.at(0);
 
     // make sure all of the entered string is a letter
@@ -27,13 +27,15 @@ std::vector<std::string> getInput() {
         std::cin >> userInput.at(1);
     }
 
-    std::cout << "Enter The Desired Shift Value Deliminated With Spaces. All Missing Values Default To 1: ";
-    std::cin >> userInput.at(2);
-
-    // make sure all the shift values are numbers
-    while(!std::all_of(userInput.at(2).begin(), userInput.at(2).end(), ::isdigit)) {
-        std::cout << "Improper Shift Value: ";
+    if (!(userInput.at(1) == "d") && !(userInput.at(1) == "D")) {
+        std::cout << "Enter The Desired Shift Value Deliminated With Spaces. All Missing Values Default To 1: ";
         std::cin >> userInput.at(2);
+
+        // make sure all the shift values are numbers
+        while(!std::all_of(userInput.at(2).begin(), userInput.at(2).end(), ::isdigit)) {
+            std::cout << "Improper Shift Value: ";
+            std::cin >> userInput.at(2);
+        }
     }
 
     return userInput;
@@ -56,7 +58,6 @@ std::string encryptMessage(std::vector<std::string> userShiftVector, std::string
             newCharAscii = newCharAscii - 'Z' + 'A' - 1;
             newChar = char(newCharAscii);
         }
-        std::cout << originalString[i] << " : " << originalString[i] << " => " << newChar << " : " << newCharAscii << std::endl;
         newString += newChar;
     }
 
@@ -64,17 +65,17 @@ std::string encryptMessage(std::vector<std::string> userShiftVector, std::string
 }
 
 std::vector<std::string> decryptMessage(std::string encryptedString) {
-    std::vector<std::string> possibleDecryptions(26, "");
+    std::vector<std::string> possibleDecryptions(27, encryptedString);
     std::string decryptedString;
     int newCharAscii;
     char newChar;
 
-    for (int i = 1; i < 26; i++) {
+    for (int i = 1; i < possibleDecryptions.size(); i++) {
         decryptedString = "";
 
         for (int j = 0; j < encryptedString.length(); j++) {
             // create decrypted String
-            newCharAscii = encryptedString[i] - i;
+            newCharAscii = encryptedString[j] - i;
             newChar = char(newCharAscii);
 
             if(encryptedString[j] >= 'a' && encryptedString[j] <= 'z' && newChar < 'a') {
@@ -93,9 +94,6 @@ std::vector<std::string> decryptMessage(std::string encryptedString) {
 
 int main() {
     std::vector vals = getInput();
-    for (int i = 0; i < vals.size(); i++) {
-        std::cout << i << ": " << vals.at(i) << std::endl;
-    }
 
     std::string userString = vals.at(0);
 
@@ -137,6 +135,14 @@ int main() {
     }
 
     // keep exe open
-    char c; std::cin >> c;
+    std::cout << "Enter X To Exit Or R To Encrypt/Decrypt Another String: ";
+    std::string c; std::cin >> c;
+    while (!c.find_first_not_of("xXrR")) {
+        std::cout << "Improper Input. Please Try Again: ";
+        std::cin >> c;
+    }
+    if (c == "r" || c == "R") {
+        main();
+    }
     return 0;
 }
