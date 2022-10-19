@@ -1,6 +1,6 @@
 ## Project Idea
 
-This project introduces encryption and decryption, while also allowing me to refresh myself on [Python](https://www.python.org/).
+This project introduces encryption and decryption, while also allowing me to refresh myself on C++.
 
 ## What Is Encryption
 [Encryption](https://csrc.nist.gov/glossary/term/encryption) is the action of taking potentially sensetive data such as passwords, secret messages, or even nuclear launch codes and turning them into another data that must go through decryption before it can be recognized and therefore used. 
